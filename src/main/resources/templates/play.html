@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotIt - Niveau</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body class="game-page">
+
+    <div class="game-container">
+        <div class="game-header">
+            <h2>Niveau <span th:text="${level}"></span></h2>
+            <p>Trouve <strong th:text="${differencesCount}"></strong> différences !</p>
+            <p>Différences trouvées : <span id="foundCount">0</span> /
+               <span th:text="${differencesCount}"></span></p>
+            <p>Score : <span id="scoreDisplay">0</span></p>
+            <div th:if="${timeLimit > 0}">
+                <p>⏱ Temps restant : <span id="timer" th:text="${timeLimit}"></span>s</p>
+            </div>
+        </div>
+
+        <div class="images-container">
+            <div class="image-wrapper">
+                <h3>Image modifiée</h3>
+                <div class="img-box" id="box-modified">
+                    <img th:src="@{'/images/level' + ${level} + '_modified.jpg'}"
+                         alt="Image modifiée" id="img-modified"
+                         onclick="handleClick(event, this)"/>
+                </div>
+            </div>
+            <div class="image-wrapper">
+                <h3>Image originale</h3>
+                <div class="img-box" id="box-original">
+                    <img th:src="@{'/images/level' + ${level} + '_original.jpg'}"
+                         alt="Image originale" id="img-original"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-buttons">
+            <form th:action="@{/finish}" method="post" id="finishForm">
+                <input type="hidden" name="level" th:value="${level}" id="hiddenLevel"/>
+                <input type="hidden" name="differencesFound" id="hiddenFound2" value="0"/>
+                <input type="hidden" name="secondsUsed" id="hiddenSeconds" value="0"/>
+                <button type="button" class="btn-finish" onclick="finishGame()">
+                    🏁 Terminer
+                </button>
+            </form>
+            <input type="hidden" id="hiddenFound" value="0"/>
+            <input type="hidden" id="hiddenScore" value="0"/>
+            <input type="hidden" id="hiddenTime" th:value="${timeLimit}"/>
+            <a th:href="@{/menu}" class="btn-menu">← Menu</a>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        var TOTAL_DIFFERENCES = /*[[${differencesCount}]]*/ 10;
+        var TIME_LIMIT = /*[[${timeLimit}]]*/ 0;
+        var INITIAL_FOUND = /*[[${differencesFound}]]*/ 0;
+        var INITIAL_SCORE = /*[[${currentScore}]]*/ 0;
+        var INITIAL_TIME = /*[[${timeRemaining}]]*/ 0;
+    </script>
+    <script th:src="@{/game.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotIt - Inscription</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <h1>🔍 SpotIt</h1>
+        <h2>Inscription</h2>
+
+        <div class="error" th:if="${error}" th:text="${error}"></div>
+
+        <form th:action="@{/register}" method="post">
+
+            <input type="text" name="username" placeholder="Choisis un username" required/>
+            <input type="password" name="password" placeholder="Choisis un mot de passe" required/>
+            <button type="submit">S'inscrire</button>
+
+        </form>
+
+        <p>Déjà un compte ? <a th:href="@{/login}">Se connecter</a></p>
+
+    </div>
+
+</body>
+</html>

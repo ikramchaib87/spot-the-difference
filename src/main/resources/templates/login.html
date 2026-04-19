@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotIt - Connexion</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <h1>🔍 SpotIt</h1>
+        <h2>Connexion</h2>
+
+        <!--  th:if="${error}" = affiche ce div seulement si le controller a envoyé une erreur -->
+        <div class="error" th:if="${error}" th:text="${error}"></div>
+
+        <!-- th:action="@{/login}" = envoie le formulaire vers POST /login -->
+        <form th:action="@{/login}" method="post">
+
+            <input type="text" name="username" placeholder="Username" required/>
+            <input type="password" name="password" placeholder="Mot de passe" required/>
+            <button type="submit">Se connecter</button>
+
+        </form>
+
+        <p>Pas encore de compte ? <a th:href="@{/register}">S'inscrire</a></p>
+
+    </div>
+
+</body>
+</html>

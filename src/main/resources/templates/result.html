@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotIt</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<!-- ✅ Background = l'image du niveau joué -->
+<body class="game-page" th:style="'background-image: url(/images/level' + ${level} + '_modified.jpg); background-size: cover; background-position: center;'">
+
+    <!-- ✅ Overlay de résultat par-dessus l'image -->
+    <div class="result-overlay">
+        <div class="result-card">
+
+            <h1 th:if="${differencesFound == totalDifferences}">🎉 Parfait !</h1>
+            <h1 th:if="${differencesFound < totalDifferences}">✅ Terminé !</h1>
+
+            <span class="level-label">Niveau <span th:text="${level}"></span></span>
+
+            <!-- Score -->
+            <div class="score-box">
+                <p class="score-label">Score</p>
+                <p class="score-value" th:text="${score}"></p>
+            </div>
+
+            <!-- Warning score = 0 -->
+            <div class="score-warning" th:if="${score == 0}">
+                ⚠️ Score de 0 — Rejoue pour débloquer le niveau suivant !
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat">
+                    <p class="stat-value" th:text="${differencesFound}"></p>
+                    <p class="stat-label">Trouvées</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-value" th:text="${totalDifferences}"></p>
+                    <p class="stat-label">Total</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-value" th:text="${secondsUsed} + 's'"></p>
+                    <p class="stat-label">Temps</p>
+                </div>
+            </div>
+
+            <!-- Table niveau 5 -->
+            <div class="scores-table" th:if="${level == 5}">
+                <h3>🏆 Récapitulatif</h3>
+                <table>
+                    <tr><th>Niveau</th><th>Score</th></tr>
+                    <tr><td>⭐ Niveau 1</td><td th:text="${scoreLevel1}"></td></tr>
+                    <tr><td>⭐⭐ Niveau 2</td><td th:text="${scoreLevel2}"></td></tr>
+                    <tr><td>⭐⭐⭐ Niveau 3</td><td th:text="${scoreLevel3}"></td></tr>
+                    <tr><td>⭐⭐⭐⭐ Niveau 4</td><td th:text="${scoreLevel4}"></td></tr>
+                    <tr><td>⭐⭐⭐⭐⭐ Niveau 5</td><td th:text="${scoreLevel5}"></td></tr>
+                    <tr class="total-row"><td>🏆 TOTAL</td><td th:text="${grandTotal}"></td></tr>
+                </table>
+            </div>
+
+            <!-- Boutons -->
+            <div class="result-buttons">
+                <a th:if="${level < 5 && score > 0}"
+                   th:href="@{/play(level=${level + 1})}"
+                   class="btn-next">Niveau suivant ➜</a>
+
+                <a th:if="${level == 5}"
+                   th:href="@{/menu}"
+                   class="btn-next">🏠 Accueil</a>
+
+                <a th:if="${level < 5}"
+                   th:href="@{/play(level=${level})}"
+                   class="btn-replay">🔄 Rejouer ce niveau</a>
+
+                <a th:if="${level == 5}"
+                   th:href="@{/play(level=1)}"
+                   class="btn-replay">🔄 Rejouer depuis le début</a>
+
+                <a th:href="@{/menu}" class="btn-menu">← Menu</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
