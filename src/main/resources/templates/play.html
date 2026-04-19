@@ -43,13 +43,17 @@
                 <input type="hidden" name="differencesFound" id="hiddenFound2" value="0"/>
                 <input type="hidden" name="secondsUsed" id="hiddenSeconds" value="0"/>
                 <button type="button" class="btn-finish" onclick="finishGame()">
-                    🏁 Terminer
+                     Terminer
                 </button>
             </form>
-            <input type="hidden" id="hiddenFound" value="0"/>
-            <input type="hidden" id="hiddenScore" value="0"/>
-            <input type="hidden" id="hiddenTime" th:value="${timeLimit}"/>
-            <a th:href="@{/menu}" class="btn-menu">← Menu</a>
+            <button class="btn-hint" onclick="useHint()" id="hintBtn">
+        💡 Aide (<span id="hintCount">3</span>)
+    </button>
+
+    <input type="hidden" id="hiddenFound" value="0"/>
+    <input type="hidden" id="hiddenScore" value="0"/>
+    <input type="hidden" id="hiddenTime" th:value="${timeLimit}"/>
+    <a th:href="@{/menu}" class="btn-menu">← Menu</a>
         </div>
     </div>
 

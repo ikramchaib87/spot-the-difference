@@ -467,7 +467,7 @@ body.game-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: overlayIn 0.4s ease;
+    padding: 20px;
 }
 
 @keyframes overlayIn {
@@ -477,17 +477,23 @@ body.game-page {
 
 .result-card {
     background: rgba(255,255,255,0.92);
-    padding: 40px 45px;
-    border-radius: 30px;
+    padding: 24px 30px;
+    border-radius: 24px;
     text-align: center;
     border: 2px solid rgba(255,140,0,0.25);
-    box-shadow: 0 30px 80px rgba(255,107,0,0.2),
-                inset 0 1px 0 rgba(255,255,255,1);
-    max-width: 480px;
+    box-shadow: 0 20px 60px rgba(255,107,0,0.2);
+    max-width: 400px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
     animation: cardIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+body.result-page {
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
 @keyframes cardIn {
     from { transform: scale(0.7) translateY(40px); opacity: 0; }
     to { transform: scale(1) translateY(0); opacity: 1; }
@@ -495,67 +501,69 @@ body.game-page {
 
 .result-card h1 {
     font-family: 'Fredoka One', cursive;
-    font-size: 2.8rem;
+    font-size: 2rem;
     color: #ff6b00;
     text-shadow: 3px 3px 0 rgba(255,107,0,0.15);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
+
 
 .level-label {
     color: #a0714f;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 3px;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
     display: block;
 }
 
 .score-box {
     background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(255,80,0,0.05));
     border: 2px solid rgba(255,140,0,0.25);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
 }
+
 
 .score-label {
     color: #a0714f;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 3px;
 }
 
 .score-value {
     font-family: 'Fredoka One', cursive;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     color: #ff6b00;
     line-height: 1;
 }
 
 .stats {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     justify-content: center;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
 }
 
 .stat {
     background: rgba(255,140,0,0.06);
-    border-radius: 16px;
-    padding: 14px 20px;
+    border-radius: 12px;
+    padding: 10px 14px;
     flex: 1;
     border: 1px solid rgba(255,140,0,0.15);
 }
 
 .stat-value {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: #ff6b00;
 }
 
 .stat-label {
     color: #a0714f;
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -563,48 +571,57 @@ body.game-page {
 .result-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .btn-next {
     background: linear-gradient(135deg, #ff8c00, #ff4500);
     color: #fff;
-    padding: 15px 28px;
-    border-radius: 20px;
+    padding: 12px 24px;
+    border-radius: 16px;
     display: block;
     font-weight: 900;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-family: 'Fredoka One', cursive;
-    box-shadow: 0 4px 20px rgba(255,107,0,0.35),
+    box-shadow: 0 4px 16px rgba(255,107,0,0.35),
                 0 2px 0 rgba(180,60,0,0.4);
     transition: transform 0.1s;
     letter-spacing: 1px;
 }
-.btn-next:hover { transform: translateY(-3px); }
+.btn-next:hover { transform: translateY(-2px); }
 .btn-next:active { transform: translateY(1px); }
 
 .btn-replay {
     background: rgba(255,107,0,0.08);
     color: #a0714f;
-    padding: 12px 28px;
-    border-radius: 20px;
+    padding: 10px 24px;
+    border-radius: 16px;
     display: block;
     font-weight: 700;
+    font-size: 0.9rem;
     border: 1px solid rgba(255,107,0,0.15);
     transition: all 0.2s;
 }
+
 .btn-replay:hover { background: rgba(255,107,0,0.15); color: #ff6b00; }
 
 /* ── SCORES TABLE ─────────────────────────────────── */
 .scores-table {
-    margin: 20px 0;
+    margin: 12px 0;
     background: rgba(255,140,0,0.05);
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 12px;
     border: 1px solid rgba(255,140,0,0.15);
     text-align: left;
 }
 
+.scores-table td {
+    padding: 6px 10px;
+    color: #2d1b00;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,140,0,0.08);
+    font-size: 0.85rem;
+}
 .scores-table h3 {
     font-family: 'Fredoka One', cursive;
     color: #ff6b00;
@@ -624,13 +641,6 @@ body.game-page {
     border-bottom: 1px solid rgba(255,140,0,0.15);
 }
 
-.scores-table td {
-    padding: 8px 10px;
-    color: #2d1b00;
-    font-weight: 700;
-    border-bottom: 1px solid rgba(255,140,0,0.08);
-    font-size: 0.9rem;
-}
 
 .scores-table td:last-child { color: #ff6b00; text-align: right; }
 
@@ -652,4 +662,137 @@ body.game-page {
     color: #cc3300;
     font-weight: 700;
     font-size: 0.9rem;
+}
+
+.logo-icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em;
+    display: inline-block;
+    filter: drop-shadow(3px 3px 0px rgba(180,60,0,0.3));
+}
+
+/* ── HELP BUTTON MENU ─────────────────────────────── */
+.btn-help-menu {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255,107,0,0.4),
+                0 2px 0 rgba(180,60,0,0.4);
+    transition: transform 0.1s;
+    z-index: 100;
+    font-family: 'Fredoka One', cursive;
+}
+
+.btn-help-menu:hover { transform: scale(1.1) rotate(10deg); }
+
+/* ── HELP POPUP ───────────────────────────────────── */
+.help-popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255,200,150,0.4);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.help-popup.hidden { display: none; }
+
+.help-popup-card {
+    background: rgba(255,255,255,0.95);
+    padding: 24px 28px;
+    border-radius: 24px;
+    max-width: 380px;
+    width: 90%;
+    border: 2px solid rgba(255,140,0,0.2);
+    box-shadow: 0 20px 60px rgba(255,107,0,0.2);
+    position: relative;
+    animation: cardIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.help-popup-card h2 {
+    font-family: 'Fredoka One', cursive;
+    color: #ff6b00;
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.help-content p {
+    color: #2d1b00;
+    padding: 7px 12px;
+    margin-bottom: 6px;
+    background: none;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+.help-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,107,0,0.1);
+    border: none;
+    color: #ff6b00;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 900;
+    transition: background 0.2s;
+}
+
+.help-close:hover { background: rgba(255,107,0,0.2); }
+
+/* ── HINT BUTTON ──────────────────────────────────── */
+.btn-hint {
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 900;
+    font-family: 'Fredoka One', cursive;
+    box-shadow: 0 4px 20px rgba(255,215,0,0.35),
+                0 2px 0 rgba(180,120,0,0.4);
+    transition: transform 0.1s;
+    letter-spacing: 1px;
+}
+
+.btn-hint:hover { transform: translateY(-3px); }
+.btn-hint:active { transform: translateY(1px); }
+
+/* ── HINT CIRCLE ──────────────────────────────────── */
+.circle-hint {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border: 3px solid #ffd700;
+    border-radius: 50%;
+    background: rgba(255,215,0,0.2);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 998;
+    animation: hintPulse 0.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 20px rgba(255,215,0,0.6);
+}
+
+@keyframes hintPulse {
+    from { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    to   { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
 }

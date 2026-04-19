@@ -10,8 +10,10 @@
     <div class="menu-container">
 
         <div class="menu-header">
-            <!-- th:text="${username}" = affiche le username du joueur connecté -->
-            <h1>🔍 SpotIt</h1>
+            <h1>Sp<svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="42" cy="42" r="28" fill="none" stroke="#ff6b00" stroke-width="10"/>
+                <line x1="62" y1="62" x2="92" y2="92" stroke="#ff6b00" stroke-width="11" stroke-linecap="round"/>
+            </svg>tIt</h1>
             <p>Bonjour, <strong th:text="${username}"></strong> !</p>
             <p>Meilleur score : <strong th:text="${bestScore}"></strong></p>
             <a th:href="@{/logout}" class="btn-logout">Se déconnecter</a>
@@ -21,64 +23,80 @@
 
         <div class="levels-grid">
 
-            <!-- Niveau 1 -->
             <div class="level-card">
                 <h3>⭐ Niveau 1</h3>
                 <p>Débutant</p>
-                <p>3 différences - Pas de chrono</p>
-                <!-- th:href="@{/play(level=1)}" = lien vers /play?level=1 -->
+                <p>10 différences - Pas de chrono</p>
                 <a th:href="@{/play(level=1)}" class="btn-play">Jouer</a>
             </div>
 
-            <!-- Niveau 2 : bloqué si unlockedLevel < 2 -->
             <div class="level-card" th:classappend="${unlockedLevel < 2} ? 'locked'">
                 <h3>⭐⭐ Niveau 2</h3>
                 <p>Facile</p>
-                <p>4 différences - Pas de chrono</p>
-                <a th:if="${unlockedLevel >= 2}"
-                   th:href="@{/play(level=2)}" class="btn-play">Jouer</a>
+                <p>10 différences - Pas de chrono</p>
+                <a th:if="${unlockedLevel >= 2}" th:href="@{/play(level=2)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 2}" class="lock">🔒 Terminer niveau 1</span>
             </div>
 
-            <!-- Niveau 3 -->
             <div class="level-card" th:classappend="${unlockedLevel < 3} ? 'locked'">
                 <h3>⭐⭐⭐ Niveau 3</h3>
                 <p>Moyen</p>
-                <p>5 différences - 2 minutes</p>
-                <a th:if="${unlockedLevel >= 3}"
-                   th:href="@{/play(level=3)}" class="btn-play">Jouer</a>
+                <p>10 différences - 2 minutes</p>
+                <a th:if="${unlockedLevel >= 3}" th:href="@{/play(level=3)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 3}" class="lock">🔒 Terminer niveau 2</span>
             </div>
 
-            <!-- Niveau 4 -->
             <div class="level-card" th:classappend="${unlockedLevel < 4} ? 'locked'">
                 <h3>⭐⭐⭐⭐ Niveau 4</h3>
                 <p>Difficile</p>
-                <p>6 différences - Pas de chrono</p>
-                <a th:if="${unlockedLevel >= 4}"
-                   th:href="@{/play(level=4)}" class="btn-play">Jouer</a>
+                <p>10 différences - Pas de chrono</p>
+                <a th:if="${unlockedLevel >= 4}" th:href="@{/play(level=4)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 4}" class="lock">🔒 Terminer niveau 3</span>
             </div>
 
-            <!-- Niveau 5 -->
             <div class="level-card" th:classappend="${unlockedLevel < 5} ? 'locked'">
                 <h3>⭐⭐⭐⭐⭐ Niveau 5</h3>
                 <p>Expert</p>
-                <p>7 différences - 1min 30</p>
-                <a th:if="${unlockedLevel >= 5}"
-                   th:href="@{/play(level=5)}" class="btn-play">Jouer</a>
+                <p>10 différences - 1min 30</p>
+                <a th:if="${unlockedLevel >= 5}" th:href="@{/play(level=5)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 5}" class="lock">🔒 Terminer niveau 4</span>
             </div>
 
         </div>
 
-        <!-- Partie sauvegardée : affiche seulement si hasSavedGame = true -->
         <div class="saved-game" th:if="${hasSavedGame}">
-            <h3>💾 Partie sauvegardée — Niveau <span th:text="${savedLevel}"></span></h3>
+            <h3> Partie sauvegardée — Niveau <span th:text="${savedLevel}"></span></h3>
             <a th:href="@{/resume}" class="btn-resume">Reprendre</a>
         </div>
 
     </div>
+<!-- Bouton ? -->
+        <button class="btn-help-menu" onclick="toggleHelp()">?</button>
+
+        <!-- Popup règles -->
+        <div id="helpPopup" class="help-popup hidden">
+            <div class="help-popup-card">
+                <button class="help-close" onclick="toggleHelp()">✕</button>
+                <h2> Comment jouer ?</h2>
+                <div class="help-content">
+                    <p><strong>1_ Deux images</strong> sont affichées côte à côte.</p>
+                    <p><strong>2_ Compare</strong> l'image originale (gauche) avec l'image modifiée (droite).</p>
+                    <p><strong>3_ Clique</strong> sur les zones différentes dans l'image de droite.</p>
+                    <p><strong>4_ Un cercle vert</strong> apparaît si tu as trouvé une différence.</p>
+                    <p><strong>5_ Un X rouge</strong> apparaît si c'est raté (-50 points).</p>
+                    <p><strong>6_ 5 niveaux</strong> à débloquer progressivement.</p>
+                    <p><strong>7_ Tu as 3 aides</strong> par session pour révéler une différence.</p>
+                    <p><strong>8_ Score</strong> = différences trouvées × niveau × bonus - pénalités.</p>
+                </div>
+            </div>
+        </div>
+    
+    <script>
+    function toggleHelp() {
+        var popup = document.getElementById("helpPopup");
+        popup.classList.toggle("hidden");
+    }
+    </script>
 
 </body>
 </html>
