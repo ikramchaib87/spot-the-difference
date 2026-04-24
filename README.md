@@ -1,186 +1,91 @@
+## Présentation du Projet
+SpotIt est une application web où les utilisateurs comparent deux images pour identifier des différences. L'application inclut l'authentification, plusieurs niveaux, un système de score et la sauvegarde de la progression.
+---
 
-# SpotIt – Spot the Difference Game
-
-## Project Overview
-
-SpotIt is a web application where users compare two images and identify differences.
-The application includes authentication, multiple levels, scoring, and game state saving.
+## Stack Technique
+* **Backend :** Java 17 (JDK 17.0.17)
+* **Framework :** Spring Framework 6 (Configuration Java manuelle - sans Spring Boot)
+* **ORM :** Hibernate 6 (Implémentation JPA)
+* **Frontend :** Thymeleaf, HTML, CSS, JavaScript
+* **Base de données :** MySQL 8.0
+* **Serveur :** Apache Tomcat 11
+* **Outil de Build :** Maven
 
 ---
 
-## Main Features
-
-* User registration and login
-* 5 levels with increasing difficulty
-* Score system with bonus and penalties
-* Timed levels (level 3 and 5)
-* Automatic save and resume functionality
-* Progressive level unlocking
+## Architecture (Strict MVC)
+Ce projet utilise une configuration Java manuelle :
+* **AppConfig.java :** Configure le contexte racine (DataSource, JPA/Hibernate, gestion des transactions et Services).
+* **WebConfig.java :** Configure le contexte de la Servlet (Thymeleaf, gestion des ressources statiques et MVC).
+* **WebAppInitializer.java :** Remplace le fichier `web.xml` pour démarrer la `DispatcherServlet` de Spring.
 
 ---
 
-## Tech Stack
-
-* Backend: Spring Boot (Java 17)
-* Frontend: Thymeleaf, HTML, CSS, JavaScript
-* Database: MySQL
-* Build Tool: Maven
-
----
-
-## Architecture
-
-The project follows the MVC pattern:
-
-* Model: JPA entities representing database tables
-* View: Thymeleaf templates (HTML pages)
-* Controller: Handles HTTP requests and navigation
-* Service: Contains business logic
-* Repository: Handles database operations
-
----
-
-## Project Structure
+## Structure du Projet
 
 ### Backend (Java)
+**com.spotit.config**
+* `AppConfig` : Configuration de la base de données et des services.
+* `WebConfig` : Configuration de Thymeleaf et du MVC.
+* `WebAppInitializer` : Point d'entrée de l'application pour Tomcat.
 
-**com.spotit**
+**com.spotit.controller**
+* `AuthController` : Logique d'inscription et de connexion.
+* `GameController` : Navigation et flux du jeu.
 
-* controller
-
-  * AuthController: authentication (login, register, logout)
-  * GameController: game flow (menu, play, save, finish, resume)
-
-* model
-
-  * Player: stores user data and scores
-  * SavedGame: stores game progress
-
-* repository
-
-  * PlayerRepository: user queries
-  * SavedGameRepository: saved game queries
-
-* service
-
-  * GameService: core logic (score calculation, level management, save/load)
-
-* SpotItApplication
-
-  * Application entry point
+**com.spotit.service**
+* `GameService` : Logique métier, calcul du score et gestion des niveaux.
 
 ---
 
-### Frontend
+## 🛠 Installation et Déploiement
 
-**templates (Thymeleaf)**
-
-* login.html
-* register.html
-* menu.html
-* play.html
-* result.html
-
-**static**
-
-* css/style.css
-* js/game.js
-* images/ (game levels)
-
----
-
-## Game Logic
-
-* Player clicks on the modified image
-* JavaScript calculates click position
-* Position is compared to predefined difference zones
-* Correct click → validated
-* Incorrect click → penalty
-* Score is updated dynamically
-
----
-
-## Backend Flow
-
-* User selects a level → `/play?level=X`
-* Controller checks if level is unlocked
-* Game starts (frontend handles interaction)
-* Game ends → `/finish`
-* Score is calculated in GameService
-* Level progression is updated
-
----
-
-## Database
-
-### Tables
-
----
-
-**player**
-
-* id
-* username
-* password
-* unlockedLevel
-* bestScore
-* scoreLevel1 → scoreLevel5
-
-**saved_game**
-
-* id
-* player_id
-* level
-* differences_found
-* current_score
-* time_remaining
-* saved_at
-
----
-
-## Scoring Logic
-
-Score = (Base + Bonus) × Multiplier - Time Penalty
-
-* Base = 500 × differences found
-* Bonus = +1000 if level completed
-* Multiplier = depends on level (1.0 → 1.8)
-* Time penalty = -3 per second
-* Wrong click = -50
-
----
-
-## Key Functional Points
-
-* Levels are unlocked progressively
-* Game state is auto-saved every 30 seconds
-* Saved game can be resumed from menu
-* Frontend handles interaction (click detection)
-* Backend handles validation, score, and persistence
-
----
-
-## How to Run
-
-1. Create database:
-
-```
+### 1. Base de données
+Créer la base de données dans MySQL :
+```sql
 CREATE DATABASE spotit_db;
 ```
 
-2. Configure `application.properties`:
-
+### 2. Configuration
+Ouvrir `com.spotit.config.AppConfig.java` et mettre à jour les identifiants MySQL :
+```java
+ds.setUsername("root");
+ds.setPassword("mot de passe");
 ```
-spring.datasource.username=root
-spring.datasource.password=your_sql_password
+
+### 3. Build (Génération du WAR)
+Exécuter cette commande Maven à la racine du projet :
+```bash
+clean package -DskipTests
 ```
 
-3. Run:
+### 4. Déploiement sur Tomcat
+1. Copier le fichier `spotit-1.0.0.war` généré dans le dossier `target/`.
+2. Le coller dans le dossier `webapps/` de ton installation **Tomcat 11**.
+3. Démarrer Tomcat via `startup.bat`.
+4. Accéder au jeu : `http://localhost:8080/spotit-1.0.0/`
 
-* Launch `SpotItApplication.java`
+---
 
-4. Open:
+## ⚠️ NOTE Script de Correction SQL :
+```sql
+USE spotit_db;
 
+-- Force MySQL à accepter la création de joueur sans score initial (met 0 par défaut)
+ALTER TABLE player 
+MODIFY COLUMN best_score INT NOT NULL DEFAULT 0,
+MODIFY COLUMN unlocked_level INT NOT NULL DEFAULT 1,
+MODIFY COLUMN score_level1 INT NOT NULL DEFAULT 0,
+MODIFY COLUMN score_level2 INT NOT NULL DEFAULT 0,
+MODIFY COLUMN score_level3 INT NOT NULL DEFAULT 0,
+MODIFY COLUMN score_level4 INT NOT NULL DEFAULT 0,
+MODIFY COLUMN score_level5 INT NOT NULL DEFAULT 0;
 ```
-http://localhost:8080
-```
+
+---
+
+## Logique de Score
+Score = (Base + Bonus) × Multiplicateur - Pénalité de temps
+* **Base :** 500 points par différence trouvée.
+* **Pénalités :** -3 par seconde / -50 par clic incorrect.
+* **Bonus :** +1000 pour la réussite du niveau.
