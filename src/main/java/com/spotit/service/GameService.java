@@ -6,10 +6,10 @@ import com.spotit.repository.PlayerRepository;
 import com.spotit.repository.SavedGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-// ✅ @Service dit à Spring : "cette classe est un service"
-//    Spring va la créer automatiquement et la gérer
 @Service
+@Transactional 
 public class GameService {
 
     // ✅ @Autowired = Spring injecte automatiquement le repository
@@ -71,16 +71,16 @@ public int getDifferencesCount(int level) {
     }
 }
     // ✅ Retourne le temps limite en secondes (0 = pas de chrono)
-    public int getTimeLimit(int level) {
-        switch (level) {
-            case 1: return 0;   // pas de chrono
-            case 2: return 0;   // pas de chrono
-            case 3: return 120; // 2 minutes
-            case 4: return 0;   // pas de chrono
-            case 5: return 90;  // 1 minute 30
-            default: return 0;
-        }
-    }
+	public int getTimeLimit(int level) {
+	    switch (level) {
+	        case 1: return 0;   // pas de chrono
+	        case 2: return 0;   // pas de chrono
+	        case 3: return 150; // 2 minutes 30
+	        case 4: return 120; // 2 minutes
+	        case 5: return 90;  // 1 minute 30
+	        default: return 0;
+	    }
+	}
 
     // ─── SCORE ────────────────────────────────────────────
 
@@ -112,9 +112,13 @@ public int calculateScore(int level, int differencesFound, int secondsUsed) {
     // ─── DÉBLOQUER NIVEAU SUIVANT ─────────────────────────
 
     // ✅ Après avoir terminé un niveau, débloque le suivant
-public void unlockNextLevel(Player player, int completedLevel, int score) {
+//✅ Prend un ID pas un Player — évite les objets détachés
+public void unlockNextLevel(Long playerId, int completedLevel, int score) {
 
-    // ✅ Sauvegarde le score du niveau
+    Player player = playerRepository.findById(playerId).orElse(null);
+    if (player == null) return;
+
+    // ✅ Met à jour les valeurs en mémoire
     switch (completedLevel) {
         case 1: player.setScoreLevel1(score); break;
         case 2: player.setScoreLevel2(score); break;
@@ -123,21 +127,35 @@ public void unlockNextLevel(Player player, int completedLevel, int score) {
         case 5: player.setScoreLevel5(score); break;
     }
 
-    // ✅ Débloque le niveau suivant SEULEMENT si score > 0
+    int newUnlockedLevel = player.getUnlockedLevel();
     if (score > 0 && completedLevel >= player.getUnlockedLevel() && completedLevel < 5) {
-        player.setUnlockedLevel(completedLevel + 1);
+        newUnlockedLevel = completedLevel + 1;
     }
 
-    // Calcule le meilleur score total
     int totalScore = player.getScoreLevel1() + player.getScoreLevel2()
                    + player.getScoreLevel3() + player.getScoreLevel4()
                    + player.getScoreLevel5();
 
-    if (totalScore > player.getBestScore()) {
-        player.setBestScore(totalScore);
-    }
+    int bestScore = Math.max(player.getBestScore(), totalScore);
 
-    playerRepository.save(player);
+    // ✅ Update direct SQL — bypass les problèmes Hibernate
+    playerRepository.updatePlayerStats(
+        playerId,
+        player.getScoreLevel1(), player.getScoreLevel2(),
+        player.getScoreLevel3(), player.getScoreLevel4(),
+        player.getScoreLevel5(),
+        bestScore, newUnlockedLevel
+    );
+}
+
+//✅ Supprime la sauvegarde par ID joueur
+public void deleteSavedGameById(Long playerId) {
+ Player player = playerRepository.findById(playerId).orElse(null);
+ if (player == null) return;
+ SavedGame saved = savedGameRepository.findByPlayer(player);
+ if (saved != null) {
+     savedGameRepository.delete(saved);
+ }
 }
 
     // ─── SAUVEGARDE ───────────────────────────────────────

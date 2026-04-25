@@ -5,7 +5,8 @@
     <title>SpotIt</title>
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
-<body class="result-page" th:style="'background-image: url(/images/level' + ${level} + '_modified.jpg); background-size: cover; background-position: center;'">
+<body class="result-page" 
+      th:style="'background-image: url(' + @{'/images/level' + ${level} + '_modified.jpg'} + '); background-size: cover; background-position: center;'">
 
     <div class="result-overlay">
         <div class="result-card">
@@ -39,12 +40,11 @@
                 </div>
             </div>
 
-            <!-- ✅ Table récapitulatif niveau 5 -->
             <div class="scores-table" th:if="${level == 5}">
                 <h3>🏆 Récapitulatif</h3>
                 <table>
                     <tr><th>Niveau</th><th>Score</th></tr>
-                    <tr><td>⭐ </td><td>Niveau 1</td><td th:text="${scoreLevel1}"></td></tr>
+                    <tr><td>⭐ Niveau 1</td><td th:text="${scoreLevel1}"></td></tr>
                     <tr><td>⭐⭐ Niveau 2</td><td th:text="${scoreLevel2}"></td></tr>
                     <tr><td>⭐⭐⭐ Niveau 3</td><td th:text="${scoreLevel3}"></td></tr>
                     <tr><td>⭐⭐⭐⭐ Niveau 4</td><td th:text="${scoreLevel4}"></td></tr>

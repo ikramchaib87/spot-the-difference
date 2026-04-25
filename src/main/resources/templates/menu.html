@@ -41,7 +41,7 @@
             <div class="level-card" th:classappend="${unlockedLevel < 3} ? 'locked'">
                 <h3>⭐⭐⭐ Niveau 3</h3>
                 <p>Moyen</p>
-                <p>10 différences - 2 minutes</p>
+                <p>10 différences - 2 minutes 30</p>
                 <a th:if="${unlockedLevel >= 3}" th:href="@{/play(level=3)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 3}" class="lock">🔒 Terminer niveau 2</span>
             </div>
@@ -49,7 +49,7 @@
             <div class="level-card" th:classappend="${unlockedLevel < 4} ? 'locked'">
                 <h3>⭐⭐⭐⭐ Niveau 4</h3>
                 <p>Difficile</p>
-                <p>10 différences - Pas de chrono</p>
+                <p>10 différences - 2 minutes</p>
                 <a th:if="${unlockedLevel >= 4}" th:href="@{/play(level=4)}" class="btn-play">Jouer</a>
                 <span th:if="${unlockedLevel < 4}" class="lock">🔒 Terminer niveau 3</span>
             </div>

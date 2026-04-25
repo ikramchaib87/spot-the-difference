@@ -14,15 +14,19 @@ window.onload = function() {
 };
 
 function autoSave() {
-    if (gameFinished) return; // ✅ pas de sauvegarde si fini
+    if (gameFinished) return;
     var levelVal = document.getElementById("hiddenLevel").value;
-    fetch("/save", {
+    var ctx = document.querySelector('meta[name="ctx"]').getAttribute('content');
+
+    fetch(ctx + "/save", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "level=" + levelVal +
               "&differencesFound=" + (foundCount || 0) +
               "&currentScore=" + (score || 0) +
               "&timeRemaining=" + (document.getElementById("hiddenTime").value || 0)
+    }).then(function(r) {
+        console.log("Save: " + r.status);
     });
 }
 
@@ -126,9 +130,7 @@ function handleClick(event, imgElement) {
 			if (foundCount >= TOTAL_DIFFERENCES) {
 			    clearInterval(timerInterval);
 			    gameFinished = true;
-			    setTimeout(function() {
-			        finishGame();
-			    }, 300); // ✅ Attend 600ms pour voir le dernier cercle vert
+			    finishGame();
 			}
 			
             return;
@@ -223,7 +225,7 @@ function useHint() {
         if (!foundIndexes.includes(pick)) {
             foundIndexes.push(pick);
             foundCount++;
-            score += 50; // moins de points pour une aide
+            score = Math.max(0, score - 50); // moins de points pour une aide
 
             showCircle(x, y, imgModified, "correct");
             showCircle(origX, origY, imgOriginal, "correct");
@@ -240,7 +242,7 @@ function useHint() {
                 finishGame();
             }
         }
-    }, 2000);
+    }, 3000);
 
     // ✅ Consomme une aide
     hintsLeft--;
@@ -291,7 +293,7 @@ function showHintMessage(msg) {
     document.body.appendChild(div);
     setTimeout(function() { if (div.parentElement) div.remove(); }, 3000);
 }
-// CALIBRATION - supprimer après
+/*CALIBRATION - supprimer après
 document.addEventListener("DOMContentLoaded", function() {
     var img = document.getElementById("img-modified");
     if (img) {
@@ -302,4 +304,4 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("{ x: " + x + ", y: " + y + ", r: 6 },");
         });
     }
-});
+});*/
