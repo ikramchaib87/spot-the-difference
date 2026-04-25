@@ -47,7 +47,7 @@ CREATE DATABASE spotit_db;
 ```
 
 ### 2. Configuration
-Ouvrir `com.spotit.config.AppConfig.java` et mettre à jour les identifiants MySQL :
+Ouvrir `Application.properties` et mettre à jour les identifiants MySQL :
 ```java
 ds.setUsername("root");
 ds.setPassword("mot de passe");
