@@ -1,7 +1,9 @@
 ## Présentation du Projet
 SpotIt est une application web où les utilisateurs comparent deux images pour identifier des différences. L'application inclut l'authentification, plusieurs niveaux, un système de score et la sauvegarde de la progression.
----
 
+---
+![image alt](https://github.com/ikramchaib87/spot-the-difference/blob/a727f48b9809421a2c23084cd94241fe1ddd5f82/Cover.png)
+---
 ## Stack Technique
 * **Backend :** Java 17 (JDK 17.0.17)
 * **Framework :** Spring Framework 6 (Configuration Java manuelle - sans Spring Boot)
