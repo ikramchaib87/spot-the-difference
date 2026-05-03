@@ -40,7 +40,7 @@ Ce projet utilise une configuration Java manuelle :
 
 ---
 
-## 🛠 Installation et Déploiement
+## Installation et Déploiement
 
 ### 1. Base de données
 Créer la base de données dans MySQL :
@@ -66,23 +66,6 @@ clean package -DskipTests
 2. Le coller dans le dossier `webapps/` de ton installation **Tomcat 11**.
 3. Démarrer Tomcat via `startup.bat`.
 4. Accéder au jeu : `http://localhost:8080/spotit-1.0.0/`
-
----
-
-## ⚠️ NOTE Script de Correction SQL :
-```sql
-USE spotit_db;
-
--- Force MySQL à accepter la création de joueur sans score initial (met 0 par défaut)
-ALTER TABLE player 
-MODIFY COLUMN bestScore INT NOT NULL DEFAULT 0,
-MODIFY COLUMN unlockedLevel INT NOT NULL DEFAULT 1,
-MODIFY COLUMN scoreLevel1 INT NOT NULL DEFAULT 0,
-MODIFY COLUMN scoreLevel2 INT NOT NULL DEFAULT 0,
-MODIFY COLUMN scoreLevel3 INT NOT NULL DEFAULT 0,
-MODIFY COLUMN scoreLevel4 INT NOT NULL DEFAULT 0,
-MODIFY COLUMN scoreLevel5 INT NOT NULL DEFAULT 0;
-```
 
 ---
 
