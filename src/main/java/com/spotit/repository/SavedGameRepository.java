@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SavedGameRepository extends JpaRepository<SavedGame, Long> {
 
-    // ✅ Cherche la partie sauvegardée d'un joueur
+    //  Cherche la partie sauvegardée d'un joueur
     //    Un joueur ne peut avoir qu'une seule sauvegarde à la fois
     SavedGame findByPlayer(Player player);
 
-    // ✅ Vérifie si le joueur a déjà une partie sauvegardée
+    //  Vérifie si le joueur a déjà une partie sauvegardée
     boolean existsByPlayer(Player player);
 }

@@ -2,7 +2,7 @@ var foundCount = INITIAL_FOUND;
 var score = INITIAL_SCORE;
 var secondsUsed = 0;
 var timerInterval = null;
-var gameFinished = false; // ✅ FLAG — bloque tout quand true
+var gameFinished = false;
 var hintsLeft = 3;
 var hintCooldown = false;
 
@@ -88,7 +88,7 @@ var differences = {
 var foundIndexes = [];
 
 function handleClick(event, imgElement) {
-    // ✅ Bloque si jeu terminé
+    // Bloque les clics si la partie est terminée
     if (gameFinished) return;
 
     var rect = imgElement.getBoundingClientRect();
@@ -176,7 +176,7 @@ function finishGame() {
 function useHint() {
     if (gameFinished) return;
 
-    // ✅ Vérifie le cooldown (15 min)
+    // Vérifie le cooldown de 15 minutes avant de recharger les aides
     var lastHintTime = localStorage.getItem("lastHintRefill");
     var now = Date.now();
 
@@ -186,14 +186,14 @@ function useHint() {
             showHintMessage("⏳ Reviens dans " + remaining + " min !");
             return;
         } else {
-            // ✅ 15 min passées → recharge 3 aides
+            // Recharge 3 aides après 15 minutes d'attente
             hintsLeft = 3;
             localStorage.removeItem("lastHintRefill");
             updateHintBtn();
         }
     }
 
-    // ✅ Cherche une différence pas encore trouvée
+    // Cherche une différence non encore trouvée
     var levelKey = parseInt(document.getElementById("hiddenLevel").value);
     var levelDiffs = differences[levelKey];
     var notFound = [];
@@ -204,7 +204,7 @@ function useHint() {
 
     if (notFound.length === 0) return;
 
-    // ✅ Révèle une différence aléatoire
+    // Révèle une différence aléatoire parmi celles restantes
     var pick = notFound[Math.floor(Math.random() * notFound.length)];
     var diff = levelDiffs[pick];
 
@@ -216,16 +216,16 @@ function useHint() {
     var origX = (diff.x / 100) * imgOriginal.offsetWidth;
     var origY = (diff.y / 100) * imgOriginal.offsetHeight;
 
-    // ✅ Affiche cercle orange "hint" sur les deux images
+    // Affiche un cercle orange sur les deux images pendant 2 secondes
     showHintCircle(x, y, imgModified);
     showHintCircle(origX, origY, imgOriginal);
 
-    // ✅ Après 2 secondes, compte comme trouvée automatiquement
+    // Valide automatiquement la différence après 3 secondes, avec pénalité de score
     setTimeout(function() {
         if (!foundIndexes.includes(pick)) {
             foundIndexes.push(pick);
             foundCount++;
-            score = Math.max(0, score - 50); // moins de points pour une aide
+            score = Math.max(0, score - 50);
 
             showCircle(x, y, imgModified, "correct");
             showCircle(origX, origY, imgOriginal, "correct");
@@ -244,7 +244,7 @@ function useHint() {
         }
     }, 3000);
 
-    // ✅ Consomme une aide
+    // Consomme une aide et démarre le cooldown si c'était la dernière
     hintsLeft--;
     if (hintsLeft === 0) {
         localStorage.setItem("lastHintRefill", Date.now().toString());
@@ -293,15 +293,3 @@ function showHintMessage(msg) {
     document.body.appendChild(div);
     setTimeout(function() { if (div.parentElement) div.remove(); }, 3000);
 }
-/*CALIBRATION - supprimer après
-document.addEventListener("DOMContentLoaded", function() {
-    var img = document.getElementById("img-modified");
-    if (img) {
-        img.addEventListener("click", function(e) {
-            var rect = this.getBoundingClientRect();
-            var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-            var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-            console.log("{ x: " + x + ", y: " + y + ", r: 6 },");
-        });
-    }
-});*/

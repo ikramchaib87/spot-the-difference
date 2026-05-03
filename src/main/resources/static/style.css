@@ -1,7 +1,9 @@
 /* ── FONTS ────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
 
-/* ── RESET ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════════ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -15,6 +17,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Dégradés d'ambiance en arrière-plan */
 body::before {
     content: '';
     position: fixed;
@@ -30,8 +33,10 @@ body::before {
 
 a { text-decoration: none; }
 
-/* ── AUTH PAGES ───────────────────────────────────── */
 
+/* ══════════════════════════════════════════════════
+   PAGES D'AUTHENTIFICATION
+══════════════════════════════════════════════════ */
 .auth-container {
     position: relative;
     z-index: 1;
@@ -113,7 +118,10 @@ a { text-decoration: none; }
 .auth-container p { color: #a0714f; font-size: 0.95rem; }
 .auth-container a { color: #ff6b00; font-weight: 800; }
 
-/* ── ERROR ────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   MESSAGE D'ERREUR
+══════════════════════════════════════════════════ */
 .error {
     background: rgba(255,80,50,0.1);
     border: 1px solid rgba(255,80,50,0.4);
@@ -124,7 +132,10 @@ a { text-decoration: none; }
     color: #cc3300;
 }
 
-/* ── MENU ─────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   MENU PRINCIPAL
+══════════════════════════════════════════════════ */
 .menu-container {
     position: relative;
     z-index: 1;
@@ -134,6 +145,7 @@ a { text-decoration: none; }
     text-align: center;
 }
 
+/* En-tête du menu */
 .menu-header { margin-bottom: 35px; }
 
 .menu-header h1 {
@@ -154,6 +166,7 @@ a { text-decoration: none; }
 .menu-header p { color: #a0714f; margin: 4px 0; }
 .menu-header strong { color: #ff6b00; }
 
+/* Bouton de déconnexion */
 .btn-logout {
     background: rgba(255,107,0,0.08);
     color: #a0714f;
@@ -171,7 +184,10 @@ a { text-decoration: none; }
     color: #cc3300;
 }
 
-/* ── LEVELS GRID ──────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   GRILLE DES NIVEAUX
+══════════════════════════════════════════════════ */
 .levels-grid {
     display: flex;
     flex-wrap: wrap;
@@ -191,6 +207,7 @@ a { text-decoration: none; }
     cursor: pointer;
 }
 
+/* Couleurs par niveau */
 .level-card:nth-child(1) {
     background: linear-gradient(145deg, #ff8c00, #e65c00);
     box-shadow: 0 8px 24px rgba(255,140,0,0.35), 0 3px 0 rgba(0,0,0,0.15);
@@ -217,6 +234,7 @@ a { text-decoration: none; }
 }
 .level-card:active:not(.locked) { transform: translateY(-2px); }
 
+/* Niveau verrouillé */
 .level-card.locked {
     background: linear-gradient(145deg, #d4c4b0, #c4b49a) !important;
     box-shadow: none !important;
@@ -235,7 +253,12 @@ a { text-decoration: none; }
 .level-card p { color: rgba(255,255,255,0.9); font-size: 0.82rem; margin-bottom: 4px; }
 .lock { color: rgba(255,255,255,0.6); font-size: 0.78rem; display: block; margin-top: 10px; }
 
-/* ── BUTTONS ──────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   BOUTONS GÉNÉRIQUES
+══════════════════════════════════════════════════ */
+
+/* Bouton "Jouer" sur les cartes de niveau */
 .btn-play {
     background: rgba(255,255,255,0.3);
     color: #fff;
@@ -250,6 +273,7 @@ a { text-decoration: none; }
 }
 .btn-play:hover { background: rgba(255,255,255,0.5); transform: scale(1.05); }
 
+/* Bouton "Reprendre" une partie sauvegardée */
 .btn-resume {
     background: linear-gradient(135deg, #ff8c00, #ff4500);
     color: #fff;
@@ -264,6 +288,7 @@ a { text-decoration: none; }
 }
 .btn-resume:hover { transform: scale(1.05); }
 
+/* Bouton "Retour au menu" */
 .btn-menu {
     background: rgba(255,107,0,0.08);
     color: #a0714f;
@@ -276,7 +301,10 @@ a { text-decoration: none; }
 }
 .btn-menu:hover { background: rgba(255,107,0,0.15); color: #ff6b00; }
 
-/* ── SAVED GAME ───────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   PARTIE SAUVEGARDÉE
+══════════════════════════════════════════════════ */
 .saved-game {
     background: rgba(255,140,0,0.1);
     border: 2px solid rgba(255,140,0,0.25);
@@ -286,7 +314,10 @@ a { text-decoration: none; }
 }
 .saved-game h3 { color: #ff6b00; margin-bottom: 10px; font-family: 'Fredoka One', cursive; }
 
-/* ── GAME PAGE ────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   PAGE DE JEU
+══════════════════════════════════════════════════ */
 body.game-page {
     align-items: flex-start;
     padding: 16px;
@@ -302,6 +333,7 @@ body.game-page {
     text-align: center;
 }
 
+/* En-tête de jeu (score, timer, niveau) */
 .game-header {
     background: rgba(255,255,255,0.75);
     backdrop-filter: blur(10px);
@@ -327,6 +359,7 @@ body.game-page {
 .game-header p { color: #a0714f; font-size: 0.95rem; margin: 0; }
 .game-header strong, .game-header span { color: #2d1b00; font-weight: 900; }
 
+/* Affichage du timer avec animation de pulsation */
 .timer-box {
     background: rgba(255,80,50,0.1);
     border: 2px solid rgba(255,80,50,0.4);
@@ -344,7 +377,10 @@ body.game-page {
     50% { box-shadow: 0 0 0 8px rgba(255,80,50,0); }
 }
 
-/* ── IMAGES ───────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   IMAGES DE JEU
+══════════════════════════════════════════════════ */
 .images-container {
     display: flex;
     gap: 16px;
@@ -391,7 +427,12 @@ body.game-page {
 
 #img-modified { cursor: crosshair; }
 
-/* ── MARKERS ──────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   MARQUEURS DE CLIC
+══════════════════════════════════════════════════ */
+
+/* Cercle vert pour une différence trouvée */
 .circle-correct {
     position: absolute;
     width: 48px;
@@ -406,6 +447,7 @@ body.game-page {
     box-shadow: 0 0 16px rgba(46,204,113,0.5);
 }
 
+/* Croix rouge pour un clic raté */
 .circle-wrong {
     position: absolute;
     color: #cc3300;
@@ -429,7 +471,10 @@ body.game-page {
     100% { opacity: 0; transform: translate(-50%, -70%) scale(0.7); }
 }
 
-/* ── GAME BUTTONS ─────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   BOUTONS DE JEU
+══════════════════════════════════════════════════ */
 .game-buttons {
     display: flex;
     gap: 12px;
@@ -456,7 +501,10 @@ body.game-page {
 .btn-finish:hover { transform: translateY(-3px); }
 .btn-finish:active { transform: translateY(1px); }
 
-/* ── RESULT OVERLAY ───────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   OVERLAY DE RÉSULTAT
+══════════════════════════════════════════════════ */
 .result-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -494,6 +542,7 @@ body.result-page {
     justify-content: center;
     padding: 0;
 }
+
 @keyframes cardIn {
     from { transform: scale(0.7) translateY(40px); opacity: 0; }
     to { transform: scale(1) translateY(0); opacity: 1; }
@@ -507,7 +556,6 @@ body.result-page {
     margin-bottom: 2px;
 }
 
-
 .level-label {
     color: #a0714f;
     font-size: 0.75rem;
@@ -517,6 +565,7 @@ body.result-page {
     display: block;
 }
 
+/* Encadré du score principal */
 .score-box {
     background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(255,80,0,0.05));
     border: 2px solid rgba(255,140,0,0.25);
@@ -524,7 +573,6 @@ body.result-page {
     padding: 12px;
     margin-bottom: 12px;
 }
-
 
 .score-label {
     color: #a0714f;
@@ -540,6 +588,7 @@ body.result-page {
     line-height: 1;
 }
 
+/* Statistiques (différences trouvées, temps) */
 .stats {
     display: flex;
     gap: 8px;
@@ -568,6 +617,7 @@ body.result-page {
     letter-spacing: 1px;
 }
 
+/* Boutons de résultat */
 .result-buttons {
     display: flex;
     flex-direction: column;
@@ -602,10 +652,12 @@ body.result-page {
     border: 1px solid rgba(255,107,0,0.15);
     transition: all 0.2s;
 }
-
 .btn-replay:hover { background: rgba(255,107,0,0.15); color: #ff6b00; }
 
-/* ── SCORES TABLE ─────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   TABLEAU DES SCORES
+══════════════════════════════════════════════════ */
 .scores-table {
     margin: 12px 0;
     background: rgba(255,140,0,0.05);
@@ -615,13 +667,6 @@ body.result-page {
     text-align: left;
 }
 
-.scores-table td {
-    padding: 6px 10px;
-    color: #2d1b00;
-    font-weight: 700;
-    border-bottom: 1px solid rgba(255,140,0,0.08);
-    font-size: 0.85rem;
-}
 .scores-table h3 {
     font-family: 'Fredoka One', cursive;
     color: #ff6b00;
@@ -641,9 +686,17 @@ body.result-page {
     border-bottom: 1px solid rgba(255,140,0,0.15);
 }
 
+.scores-table td {
+    padding: 6px 10px;
+    color: #2d1b00;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,140,0,0.08);
+    font-size: 0.85rem;
+}
 
 .scores-table td:last-child { color: #ff6b00; text-align: right; }
 
+/* Ligne du total */
 .total-row td {
     color: #cc3300 !important;
     font-size: 1rem;
@@ -652,7 +705,10 @@ body.result-page {
     border-bottom: none !important;
 }
 
-/* ── SCORE WARNING ────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   AVERTISSEMENT DE SCORE
+══════════════════════════════════════════════════ */
 .score-warning {
     background: rgba(255,80,50,0.08);
     border: 1px solid rgba(255,80,50,0.3);
@@ -664,6 +720,10 @@ body.result-page {
     font-size: 0.9rem;
 }
 
+
+/* ══════════════════════════════════════════════════
+   ICÔNE LOGO
+══════════════════════════════════════════════════ */
 .logo-icon {
     width: 1em;
     height: 1em;
@@ -674,7 +734,10 @@ body.result-page {
     filter: drop-shadow(3px 3px 0px rgba(180,60,0,0.3));
 }
 
-/* ── HELP BUTTON MENU ─────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   BOUTON D'AIDE (MENU)
+══════════════════════════════════════════════════ */
 .btn-help-menu {
     position: fixed;
     bottom: 30px;
@@ -697,7 +760,10 @@ body.result-page {
 
 .btn-help-menu:hover { transform: scale(1.1) rotate(10deg); }
 
-/* ── HELP POPUP ───────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   POPUP D'AIDE
+══════════════════════════════════════════════════ */
 .help-popup {
     position: fixed;
     top: 0; left: 0;
@@ -741,6 +807,8 @@ body.result-page {
     font-size: 0.82rem;
     line-height: 1.4;
 }
+
+/* Bouton de fermeture de la popup */
 .help-close {
     position: absolute;
     top: 16px; right: 16px;
@@ -757,7 +825,12 @@ body.result-page {
 
 .help-close:hover { background: rgba(255,107,0,0.2); }
 
-/* ── HINT BUTTON ──────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════
+   BOUTON ET CERCLE D'AIDE (INDICE)
+══════════════════════════════════════════════════ */
+
+/* Bouton "Lampe" pour révéler un indice */
 .btn-hint {
     background: linear-gradient(135deg, #ffd700, #ff8c00);
     color: #fff;
@@ -777,7 +850,7 @@ body.result-page {
 .btn-hint:hover { transform: translateY(-3px); }
 .btn-hint:active { transform: translateY(1px); }
 
-/* ── HINT CIRCLE ──────────────────────────────────── */
+/* Cercle orange animé affiché sur l'emplacement de l'indice */
 .circle-hint {
     position: absolute;
     width: 52px;

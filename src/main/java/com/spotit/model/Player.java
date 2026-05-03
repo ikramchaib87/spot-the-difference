@@ -2,31 +2,39 @@ package com.spotit.model;
 
 import jakarta.persistence.*;
 
+// Cette classe représente la table "player" dans la base de données
+// Chaque instance de Player = une ligne dans la table
 @Entity
 @Table(name = "player")
 public class Player {
 
+    // Clé primaire auto-incrémentée (1, 2, 3...)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Deux joueurs ne peuvent pas avoir le même username
     @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
+    // Meilleur score total du joueur (somme des 5 niveaux)
     private int bestScore = 0;
+
+    // Niveau actuellement débloqué — commence à 1
+    // S'incrémente quand le joueur termine un niveau avec score > 0
     private int unlockedLevel = 1;
 
-    // ✅ Score de chaque niveau sauvegardé séparément
+    // Score de chaque niveau sauvegardé séparément en BDD
     private int scoreLevel1 = 0;
     private int scoreLevel2 = 0;
     private int scoreLevel3 = 0;
     private int scoreLevel4 = 0;
     private int scoreLevel5 = 0;
 
-    // ─── Getters & Setters ───────────────────────────
+    // Getters et Setters — permettent à Spring et Hibernate d'accéder aux champs privés
 
     public Long getId() { return id; }
 

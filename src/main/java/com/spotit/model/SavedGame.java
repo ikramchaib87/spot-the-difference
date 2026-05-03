@@ -3,7 +3,8 @@ package com.spotit.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-// ✅ Cette table garde l'état d'une partie en cours
+// Représente la table "saved_game" — stocke l'état d'une partie en cours
+// Permet au joueur de quitter et reprendre sa partie plus tard
 @Entity
 @Table(name = "saved_game")
 public class SavedGame {
@@ -12,27 +13,31 @@ public class SavedGame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ Lien vers le joueur : plusieurs sauvegardes peuvent appartenir au même joueur
+    // Lien vers le joueur propriétaire de cette sauvegarde
     @ManyToOne
     @JoinColumn(name = "player_id")
     private Player player;
 
-    // ✅ Le niveau en cours (1 à 5)
+    // Le niveau en cours au moment de la sauvegarde (1 à 5)
     private int level;
 
-    // ✅ Nombre de différences déjà trouvées
+    // Nombre de différences déjà trouvées avant la sauvegarde
+    @Column(name = "differences_found")
     private int differencesFound = 0;
 
-    // ✅ Score actuel au moment de la sauvegarde
+    // Score accumulé avant la sauvegarde
+    @Column(name = "current_score")
     private int currentScore = 0;
 
-    // ✅ Temps restant en secondes (pour les niveaux avec chrono)
+    // Temps restant en secondes — utilisé pour les niveaux avec chronomètre
+    @Column(name = "time_remaining")
     private int timeRemaining = 0;
 
-    // ✅ Date et heure de la sauvegarde
+    // Date et heure automatique de la sauvegarde
+    @Column(name = "saved_at")
     private LocalDateTime savedAt = LocalDateTime.now();
 
-    // ─── Getters & Setters ───────────────────────────────
+    // Getters et Setters
 
     public Long getId() { return id; }
 

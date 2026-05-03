@@ -11,30 +11,34 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
-// ✅ Configuration Spring MVC
+// Configuration de la couche web : Thymeleaf, Controllers, ressources statiques
 @Configuration
-@EnableWebMvc  // ← Active Spring MVC : DispatcherServlet, HandlerMapping, etc.
 
-// ✅ Scanne UNIQUEMENT les controllers
+// Active Spring MVC : enregistre le DispatcherServlet, HandlerMapping, etc.
+@EnableWebMvc
+
+// Scanne tous les composants de l'application
 @ComponentScan(basePackages = "com.spotit")
+
+// Importe AppConfig pour que les beans BDD soient disponibles ici aussi
 @Import(AppConfig.class)
 public class WebConfig implements WebMvcConfigurer {
 
-    // ─── THYMELEAF ────────────────────────────────────────
-
-    // ✅ Résolveur de templates : cherche dans /WEB-INF/templates/
+    // Indique à Thymeleaf où chercher les fichiers HTML
+    // et avec quelle extension (.html)
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/templates/");   // ← dossier des HTML
+        resolver.setPrefix("classpath:/templates/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding("UTF-8");
-        resolver.setCacheable(false); // false en dev, true en production
+        resolver.setCacheable(false);
         return resolver;
     }
 
-    // ✅ Moteur de templates Thymeleaf
+    // Le moteur Thymeleaf qui traite les expressions th:text, th:if, th:href...
+    // et les remplace par les vraies valeurs envoyées depuis les Controllers
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -43,7 +47,8 @@ public class WebConfig implements WebMvcConfigurer {
         return engine;
     }
 
-    // ✅ Vue Resolver : lie Spring MVC avec Thymeleaf
+    // Fait le lien entre Spring MVC et Thymeleaf
+    // Quand un Controller retourne "menu", ce resolver cherche templates/menu.html
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
@@ -53,9 +58,8 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
-    // ─── RESSOURCES STATIQUES ─────────────────────────────
-
-    // ✅ Sert les fichiers CSS, JS, images depuis /static/
+    // Déclare les chemins des fichiers statiques accessibles depuis le navigateur
+    // Sans cela, Tomcat bloquerait l'accès aux fichiers CSS, JS et images
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/style.css")

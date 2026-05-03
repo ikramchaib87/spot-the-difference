@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotIt - Inscription</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <h1>Sp<svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="42" cy="42" r="28" fill="none" stroke="#ff6b00" stroke-width="10"/>
+    	<line x1="62" y1="62" x2="92" y2="92" stroke="#ff6b00" stroke-width="11" stroke-linecap="round"/>
+		</svg>tIt</h1>
+        <h2>Inscription</h2>
+
+        <div class="error" th:if="${error}" th:text="${error}"></div>
+
+        <form th:action="@{/register}" method="post">
+
+            <input type="text" name="username" placeholder="Choisis un username" required/>
+            <input type="password" name="password" placeholder="Choisis un mot de passe" required/>
+            <button type="submit">S'inscrire</button>
+
+        </form>
+
+        <p>Déjà un compte ? <a th:href="@{/login}">Se connecter</a></p>
+
+    </div>
+
+</body>
+</html>

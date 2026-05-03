@@ -11,12 +11,16 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import javax.sql.DataSource;
 import java.util.Properties;
 
+// Classe de configuration principale : BDD, JPA, Transactions
 @Configuration
-@PropertySource("classpath:application.properties") // ✅ Lit le fichier properties
+
+// Lit les valeurs depuis application.properties
+@PropertySource("classpath:application.properties")
+
+// Scanne tous les composants sauf les Controllers (gérés par WebConfig)
 @ComponentScan(
     basePackages = "com.spotit",
     excludeFilters = @ComponentScan.Filter(
@@ -24,55 +28,63 @@ import java.util.Properties;
         classes = org.springframework.stereotype.Controller.class
     )
 )
+
+// Active les repositories Spring Data JPA
 @EnableJpaRepositories(
     basePackages = "com.spotit.repository",
     entityManagerFactoryRef = "entityManagerFactory",
     transactionManagerRef = "transactionManager"
 )
+
+// Active le support des transactions (@Transactional)
 @EnableTransactionManagement
 public class AppConfig {
 
+    // Injecte l'accès aux propriétés du fichier application.properties
     @Autowired
-    private Environment env; // ✅ Permet d'accéder aux variables du fichier .properties
+    private Environment env;
 
-    // ─── SOURCE DE DONNÉES ────────────────────────────────
-
+    // Configure la connexion à la base de données MySQL via HikariCP
+    // HikariCP maintient un pool de connexions ouvertes pour éviter
+    // d'en créer une nouvelle à chaque requête
     @Bean
     public DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
-        // ✅ Utilise les valeurs du fichier .properties
         ds.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
         ds.setJdbcUrl(env.getProperty("spring.datasource.url"));
         ds.setUsername(env.getProperty("spring.datasource.username"));
         ds.setPassword(env.getProperty("spring.datasource.password"));
-        
         ds.setMaximumPoolSize(10);
         ds.setMinimumIdle(2);
         return ds;
     }
 
-    // ─── JPA / HIBERNATE ──────────────────────────────────
-
+    // Configure Hibernate comme implémentation JPA
+    // Hibernate lit les entités @Entity et génère les tables MySQL automatiquement
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
+
+        // Indique où se trouvent les entités JPA (@Entity)
         em.setPackagesToScan("com.spotit.model");
 
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
-        // ✅ Utilise les propriétés Hibernate du fichier .properties
         Properties props = new Properties();
         props.setProperty("hibernate.dialect", env.getProperty("spring.jpa.properties.hibernate.dialect"));
+
+        // "update" = Hibernate crée ou met à jour les tables sans supprimer les données
         props.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
         props.setProperty("hibernate.show_sql", env.getProperty("spring.jpa.show-sql"));
         props.setProperty("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
-        em.setJpaProperties(props);
 
+        em.setJpaProperties(props);
         return em;
     }
 
+    // Gestionnaire de transactions : garantit que les opérations BDD
+    // sont atomiques (tout réussit ou tout échoue)
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager tm = new JpaTransactionManager();

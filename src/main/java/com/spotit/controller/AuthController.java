@@ -8,86 +8,81 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
-// ✅ @Controller dit à Spring : "cette classe gère des pages web"
+// Gère toutes les pages liées à l'authentification : login, register, logout
 @Controller
 public class AuthController {
 
-    // ✅ Spring injecte automatiquement le service
+    // Spring injecte automatiquement le service sans qu'on fasse "new GameService()"
     @Autowired
     private GameService gameService;
 
-    // ─── PAGE LOGIN ──────────────────────────────────────
-
-    // ✅ GET /login → affiche la page login.html
+    // Affiche la page de connexion
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // cherche templates/login.html
+        return "login";
     }
 
-    // ✅ POST /login → traite le formulaire de connexion
+    // Traite le formulaire de connexion
+    // @RequestParam récupère les valeurs des champs <input> du formulaire HTML
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
 
-        // Appelle le service pour vérifier username/password
         Player player = gameService.login(username, password);
 
         if (player == null) {
-            // ❌ Mauvais identifiants → on reste sur login avec message d'erreur
+            // Mauvais identifiants : on renvoie vers login avec un message d'erreur
             model.addAttribute("error", "Username ou mot de passe incorrect !");
             return "login";
         }
 
-        // ✅ Connexion réussie → on sauvegarde le joueur dans la session
-        //    La session garde le joueur connecté pendant toute sa visite
+        // Connexion réussie : on stocke l'ID du joueur dans la session HTTP
+        // La session permet de savoir qui est connecté sur toutes les pages suivantes
         session.setAttribute("playerId", player.getId());
         session.setAttribute("username", player.getUsername());
 
-        // Redirige vers le menu principal
         return "redirect:/menu";
     }
 
-    // ─── PAGE REGISTER ───────────────────────────────────
-
-    // ✅ GET /register → affiche la page register.html
+    // Affiche la page d'inscription
     @GetMapping("/register")
     public String registerPage() {
         return "register";
     }
 
-    // ✅ POST /register → traite le formulaire d'inscription
+    // Traite le formulaire d'inscription
     @PostMapping("/register")
     public String register(@RequestParam String username,
                            @RequestParam String password,
+                           HttpSession session,
                            Model model) {
 
-        // Appelle le service pour créer le joueur
         boolean success = gameService.register(username, password);
 
         if (!success) {
-            // ❌ Username déjà pris
             model.addAttribute("error", "Ce username est déjà pris !");
             return "register";
         }
 
-        // ✅ Inscription réussie → redirige vers login
-        return "redirect:/login";
+        // Auto-login après inscription — stocke l'ID en session directement
+        Player player = gameService.login(username, password);
+        session.setAttribute("playerId", player.getId());
+        session.setAttribute("username", player.getUsername());
+
+        return "redirect:/menu";
     }
 
-    // ─── DÉCONNEXION ─────────────────────────────────────
-
-    // ✅ GET /logout → vide la session et redirige vers login
+    // Déconnexion : supprime toutes les données de la session
+    // Le joueur devra se reconnecter pour accéder au jeu
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // supprime toutes les données de session
+        session.invalidate();
         return "redirect:/login";
     }
 
-    // ─── PAGE D'ACCUEIL ──────────────────────────────────
-
-    // ✅ GET / → redirige vers login directement
+    // La racine "/" redirige directement vers la page de connexion
     @GetMapping("/")
     public String home() {
         return "redirect:/login";
