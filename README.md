@@ -1,4 +1,4 @@
-## Présentation du Projet
+## Présentation du Projet (Jeux de reflexion)
 SpotIt est une application web où les utilisateurs comparent deux images pour identifier des différences. L'application inclut l'authentification, plusieurs niveaux, un système de score et la sauvegarde de la progression.
 
 ---
